@@ -1,0 +1,54 @@
+[gd_scene format=2]
+
+[node name="Дары" type="Node2D"]
+visible = false
+
+[node name="Дар_1" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_2" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_3" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_4" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_5" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_6" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_7" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_8" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_9" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Дар_10" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"

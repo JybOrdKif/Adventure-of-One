@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="Vudr_yach_soxr" type="Label"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"

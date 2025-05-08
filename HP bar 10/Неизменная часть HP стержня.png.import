@@ -1,0 +1,35 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/Неизменная часть HP стержня.png-70e28363849b4d9583f788f5e3c0e0f1.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://HP bar 10/Неизменная часть HP стержня.png"
+dest_files=[ "res://.import/Неизменная часть HP стержня.png-70e28363849b4d9583f788f5e3c0e0f1.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+process/normal_map_invert_y=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0

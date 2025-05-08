@@ -1,0 +1,883 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Текстуры/Заголовок в меню.png" type="Texture" id=1]
+[ext_resource path="res://Текстуры/Текстуры неживых объектов/Тьма.png" type="Texture" id=2]
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/Выбор (расширенное ДаНет).png" type="Texture" id=3]
+[ext_resource path="res://timesnewromanpsmt.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/Да.Нет.png" type="Texture" id=5]
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/Фон для окошка Да.Нет.png" type="Texture" id=6]
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/Контур для говорящего.png" type="Texture" id=7]
+[ext_resource path="res://Сцены/Кнопка с двигающимися змеями.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/Окошко выбора (расширенное ДаНет).png" type="Texture" id=9]
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/Кнопка ячейки сохранения.png" type="Texture" id=10]
+
+[sub_resource type="GDScript" id=8]
+script/source = "extends Node2D
+
+onready var lore = get_node(\"/root/Lore\")
+
+var poglot = 0
+var sl = 0
+var put = \"\"
+
+func _ready():
+	var save = File.new()
+	var text = \"\"
+	
+	$\"Button_Play/Текст кнопки32\".text = \"Играть\"
+	$\"Button_Play/Текст кнопки32\".visible = true
+	$\"Button_Play/Текст кнопки24\".visible = false
+	
+	$\"Button_Options/Текст кнопки24\".text = \"Настройки\"
+	$\"Button_Options/Текст кнопки24\".visible = true
+	$\"Button_Options/Текст кнопки32\".visible = false
+	
+	$\"Button_Help/Текст кнопки32\".text = \"Помощь\"
+	$\"Button_Help/Текст кнопки32\".visible = true
+	$\"Button_Help/Текст кнопки24\".visible = false
+	
+	$\"Button_Quit/Текст кнопки32\".text = \"Выйти\"
+	$\"Button_Quit/Текст кнопки32\".visible = true
+	$\"Button_Quit/Текст кнопки24\".visible = false
+	
+	for i in range(1, 4):
+		put = \"res://Текстовые файлы/save_slot_\" + str(i) + \".txt\"
+		#print(save.open(put, File.READ), \" \", save.get_8())
+		if save.open(put, File.READ) != 0:
+			text = \"Новая игра\"
+		else:
+			text = \"Продолжить\"
+		match i:
+			1:$\"Ячейки сохранений/yach_soxr_1/Текст\".text = text
+			2:$\"Ячейки сохранений/yach_soxr_2/Текст\".text = text
+			3:$\"Ячейки сохранений/yach_soxr_3/Текст\".text = text
+	
+	$\"Ячейки сохранений/Button_Quit_Menu/Текст кнопки32\".text = \"Выйти\"
+	$\"Ячейки сохранений/Button_Quit_Menu/Текст кнопки32\".visible = true
+	$\"Ячейки сохранений/Button_Quit_Menu/Текст кнопки24\".visible = false
+	
+	for i in range(1, 4):
+		put = \"res://Текстовые файлы/save_slot_\" + str(i) + \".txt\"
+		if save.open(put, File.READ) == 0:
+			for j in range(0, 2):
+				save.get_8()
+			if save.get_8() == 49:
+				sl = save.get_8() - 48
+				if int($\"/root/Slojnost/Start_or_not\".text) == 0:
+					if sl > 0:
+						$\"/root/Slojnost\".text = str(sl)
+					$\"/root/Slojnost/Start_or_not\".text = str(1)
+		save.close()
+
+func _on_Button_Play_pressed():
+	$\"Фон в меню\".z_index = 1
+	$\"Ячейки сохранений\".visible = true
+	$\"Button_Play\".visible = false
+	$\"Button_Options\".visible = false
+	$\"Button_Help\".visible = false
+	$\"Button_Quit\".visible = false
+func _on_Button_Options_pressed():
+	poglot = get_tree().change_scene(\"res://Сцены/Меню настроек.tscn\")
+func _on_Button_Help_pressed():
+	poglot = get_tree().change_scene(\"res://Сцены/Помощь.tscn\")
+func _on_Button_Quit_pressed():
+	get_tree().quit()
+
+func _on_Yes_pressed():
+	$\"/root/Lore\".text = str(1)
+	$\"Окошко ДаНет\".visible = false
+	$\"Лор_узел\".visible = true
+func _on_No_pressed():
+	poglot = get_tree().change_scene(\"res://Комната.tscn\")
+func _on_next_button_pressed():
+	poglot = get_tree().change_scene(\"res://Комната.tscn\")
+
+func _on_var_1_pressed():
+	match $\"Окошко Выбора/var_1/Текст\".text:
+		\"Лёгкая\":
+			$\"/root/Slojnost\".text = str(1)
+		\"Средняя\":
+			$\"/root/Slojnost\".text = str(2)
+		\"Тяжёлая\":
+			$\"/root/Slojnost\".text = str(3)
+	poglot = get_tree().change_scene(\"res://Комната.tscn\")
+func _on_var_2_pressed():
+	match $\"Окошко Выбора/var_2/Текст\".text:
+		\"Лёгкая\":
+			$\"/root/Slojnost\".text = str(1)
+		\"Средняя\":
+			$\"/root/Slojnost\".text = str(2)
+		\"Тяжёлая\":
+			$\"/root/Slojnost\".text = str(3)
+		\"Главное меню\":
+			poglot = get_tree().change_scene(\"res://Сцены/Меню.tscn\")
+			return(1)
+	poglot = get_tree().change_scene(\"res://Комната.tscn\")
+
+func _on_yach_soxr_1_pressed():
+	$\"/root/VudrYachSoxr\".text = str(1)
+	loads()
+func _on_yach_soxr_2_pressed():
+	$\"/root/VudrYachSoxr\".text = str(2)
+	loads()
+func _on_yach_soxr_3_pressed():
+	$\"/root/VudrYachSoxr\".text = str(3)
+	loads()
+func _on_Button_Quit_Menu_pressed():
+	get_tree().change_scene(\"res://Сцены/Меню.tscn\")
+
+
+func mini_load(save, kol_simv):
+	var chislo = 0
+	var simv = 0
+	var minus = false
+	
+	for i in range(0, kol_simv):
+		simv = save.get_8()
+		if simv == 45:
+			minus = true
+		else:
+			if simv >= 48 && simv <= 57:
+				chislo = (simv - 48) + chislo * 10
+	if minus:
+		chislo = -chislo
+	return(chislo)
+func loads():
+	var save = File.new()
+	var c = 0
+	var nom_podz = 0
+	var kol_soxr = -1
+	var ust_sl = \"\"
+	var sl_soxr = \"\"
+	
+	put = \"res://Текстовые файлы/save_slot_\" + $\"/root/VudrYachSoxr\".text + \".txt\"
+	if save.open(put, File.READ) == 0:
+		$\"Ячейки сохранений\".visible = false
+		$\"Окошко Выбора\".visible = true
+		for i in range(0, 2):
+			while(true):
+				c = save.get_8()
+				if c == 10:
+					break
+		save.get_8()
+		mini_load(save, 3)
+		nom_podz = mini_load(save, 3)
+		for i in range(0, nom_podz):
+			kol_soxr = mini_load(save, 3)
+		save.close()
+
+		match sl:
+			1:
+				sl_soxr = \"Лёгкая\"
+			2:
+				sl_soxr = \"Средняя\"
+			3:
+				sl_soxr = \"Тяжёлая\"
+		match int($\"/root/Slojnost\".text):
+			1:
+				ust_sl = \"Лёгкая\"
+			2:
+				ust_sl = \"Средняя\"
+			3:
+				ust_sl = \"Тяжёлая\"
+
+		if sl > 0:
+			if int($\"/root/Slojnost\".text) == sl:
+				$\"Окошко Выбора/Вопрос\".text = $\"Окошко Выбора/Вопрос/Вопрос_2\".text + sl_soxr + \".\"
+				$\"Окошко Выбора/var_1/Текст\".text = \"Продолжить\"
+				$\"Окошко Выбора/var_2/Текст\".text = \"Главное меню\"
+			else:
+				if int($\"/root/Slojnost\".text) > sl:
+					if kol_soxr <= 3 * (3 - int($\"/root/Slojnost\".text)):
+						$\"Окошко Выбора/Вопрос\".text = $\"Окошко Выбора/Вопрос/Вопрос_3\".text + sl_soxr + \" или \" + ust_sl + \"?\"
+						$\"Окошко Выбора/var_1/Текст\".text = sl_soxr
+						$\"Окошко Выбора/var_2/Текст\".text = ust_sl
+					else:
+						$\"Окошко Выбора/Вопрос\".text = $\"Окошко Выбора/Вопрос/Вопрос_4\".text + sl_soxr + \", т.к. для сложности\\n\" + ust_sl + \" сделано количество\\nсохранений, превышающее допустимое.\"
+						$\"Окошко Выбора/var_1/Текст\".text = sl_soxr
+						$\"Окошко Выбора/var_2/Текст\".text = \"Главное меню\"
+				else:
+					$\"Окошко Выбора/Вопрос\".text = $\"Окошко Выбора/Вопрос/Вопрос_3\".text + sl_soxr + \" или \" + ust_sl + \"?\"
+					$\"Окошко Выбора/var_1/Текст\".text = sl_soxr
+					$\"Окошко Выбора/var_2/Текст\".text = ust_sl
+		else:
+			$\"Окошко Выбора/Вопрос\".text = $\"Окошко Выбора/Вопрос/Вопрос_1\".text + ust_sl + \".\"
+			$\"Окошко Выбора/var_1/Текст\".text = \"Продолжить\"
+			$\"Окошко Выбора/var_2/Текст\".text = \"Главное меню\"
+		#print($\"Окошко Выбора/Вопрос\".text)
+	else:
+		save.open(put, File.WRITE)
+		for i in $\"Стартовое сохранение1\".text:
+			save.store_string(i)
+		for i in $\"Стартовое сохранение2\".text:
+			save.store_string(i)
+		for i in $\"Стартовое сохранение3\".text:
+			save.store_string(i)
+		$\"Ячейки сохранений\".visible = false
+		$\"Окошко ДаНет\".visible = true
+		$\"Окошко ДаНет/Вопрос\".text = \"Хотите узнать\\nпредысторию персонажа?\"
+"
+
+[sub_resource type="DynamicFont" id=14]
+size = 22
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 30
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 20
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=13]
+size = 20
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 20
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 18
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 18
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=6]
+
+[sub_resource type="DynamicFont" id=7]
+size = 25
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=12]
+size = 20
+font_data = ExtResource( 4 )
+
+[node name="Меню" type="Node2D"]
+script = SubResource( 8 )
+
+[node name="Фон в меню" type="Sprite" parent="."]
+position = Vector2( 512, 330 )
+scale = Vector2( 16, 10.313 )
+texture = ExtResource( 2 )
+
+[node name="Ячейки сохранений" type="Node2D" parent="."]
+visible = false
+position = Vector2( 377, 160 )
+z_index = 2
+
+[node name="yach_soxr_1" type="Button" parent="Ячейки сохранений"]
+margin_right = 270.0
+margin_bottom = 86.0
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="Фон" type="Sprite" parent="Ячейки сохранений/yach_soxr_1"]
+position = Vector2( 135, 43 )
+texture = ExtResource( 10 )
+
+[node name="Название ячейки" type="Label" parent="Ячейки сохранений/yach_soxr_1"]
+margin_top = -25.0
+margin_right = 201.0
+custom_fonts/font = SubResource( 14 )
+text = "Ячейка сохранения №1"
+
+[node name="Текст" type="Label" parent="Ячейки сохранений/yach_soxr_1"]
+margin_left = 1.0
+margin_top = 19.0
+margin_right = 268.0
+margin_bottom = 68.0
+custom_fonts/font = SubResource( 15 )
+text = "Текст"
+align = 1
+valign = 1
+
+[node name="yach_soxr_2" type="Button" parent="Ячейки сохранений"]
+margin_top = 120.0
+margin_right = 270.0
+margin_bottom = 206.0
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="Фон" type="Sprite" parent="Ячейки сохранений/yach_soxr_2"]
+position = Vector2( 135, 43 )
+texture = ExtResource( 10 )
+
+[node name="Название ячейки" type="Label" parent="Ячейки сохранений/yach_soxr_2"]
+margin_top = -25.0
+margin_right = 201.0
+custom_fonts/font = SubResource( 14 )
+text = "Ячейка сохранения №2"
+
+[node name="Текст" type="Label" parent="Ячейки сохранений/yach_soxr_2"]
+margin_left = 1.0
+margin_top = 19.0
+margin_right = 268.0
+margin_bottom = 68.0
+custom_fonts/font = SubResource( 15 )
+text = "Текст"
+align = 1
+valign = 1
+
+[node name="yach_soxr_3" type="Button" parent="Ячейки сохранений"]
+margin_top = 240.0
+margin_right = 270.0
+margin_bottom = 326.0
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="Фон" type="Sprite" parent="Ячейки сохранений/yach_soxr_3"]
+position = Vector2( 135, 43 )
+texture = ExtResource( 10 )
+
+[node name="Название ячейки" type="Label" parent="Ячейки сохранений/yach_soxr_3"]
+margin_top = -25.0
+margin_right = 201.0
+custom_fonts/font = SubResource( 14 )
+text = "Ячейка сохранения №3"
+
+[node name="Текст" type="Label" parent="Ячейки сохранений/yach_soxr_3"]
+margin_left = 1.0
+margin_top = 19.0
+margin_right = 268.0
+margin_bottom = 68.0
+custom_fonts/font = SubResource( 15 )
+text = "Текст"
+align = 1
+valign = 1
+
+[node name="Button_Quit_Menu" parent="Ячейки сохранений" instance=ExtResource( 8 )]
+margin_left = 63.0
+margin_top = 354.0
+margin_right = 204.0
+margin_bottom = 420.0
+
+[node name="Окошко Выбора" type="Node2D" parent="."]
+visible = false
+position = Vector2( 512, 330 )
+z_index = 1
+
+[node name="Фон" type="Sprite" parent="Окошко Выбора"]
+texture = ExtResource( 9 )
+
+[node name="Вопрос" type="Label" parent="Окошко Выбора"]
+margin_left = -176.0
+margin_top = -82.0
+margin_right = 176.0
+margin_bottom = 55.0
+custom_fonts/font = SubResource( 9 )
+text = "Несоответствие уровней сложности
+В меню установлен средний уровень
+сложности, а в сохранении - лёгкий.
+На каком уровне сложности Вы хотели
+бы продолжить играть?"
+align = 1
+
+[node name="Вопрос_1" type="Label" parent="Окошко Выбора/Вопрос"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 13 )
+text = "
+
+Игра будет продолжена на сложности
+"
+
+[node name="Вопрос_2" type="Label" parent="Окошко Выбора/Вопрос"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 13 )
+text = "Несостыковки сложностей отсутствуют.
+Игра будет продолжена на сложности
+"
+
+[node name="Вопрос_3" type="Label" parent="Окошко Выбора/Вопрос"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 13 )
+text = "Присутствуют несостыковки
+сложностей. На какой сложности
+Вы хотите продолжить играть:
+"
+
+[node name="Вопрос_4" type="Label" parent="Окошко Выбора/Вопрос"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 13 )
+text = "Присутствуют несостыковки
+сложностей. Игра будет продолжена
+на сложности "
+
+[node name="var_1" type="Button" parent="Окошко Выбора"]
+margin_left = -152.0
+margin_top = 48.0
+margin_right = -20.0
+margin_bottom = 82.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 10 )
+icon = ExtResource( 3 )
+flat = true
+
+[node name="Текст" type="Label" parent="Окошко Выбора/var_1"]
+margin_left = 9.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 11 )
+text = "Средний"
+align = 1
+
+[node name="var_2" type="Button" parent="Окошко Выбора"]
+margin_left = 20.0
+margin_top = 48.0
+margin_right = 152.0
+margin_bottom = 82.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 10 )
+icon = ExtResource( 3 )
+flat = true
+
+[node name="Текст" type="Label" parent="Окошко Выбора/var_2"]
+margin_left = 9.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 11 )
+text = "Лёгкий"
+align = 1
+
+[node name="Окошко ДаНет" type="Node2D" parent="."]
+visible = false
+position = Vector2( 512, 330 )
+z_index = 1
+
+[node name="Фон" type="Sprite" parent="Окошко ДаНет"]
+texture = ExtResource( 6 )
+
+[node name="Вопрос" type="Label" parent="Окошко ДаНет"]
+margin_left = -111.0
+margin_top = -41.0
+margin_right = 112.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 9 )
+text = "Хотите узнать
+предысторию персонажа?"
+align = 1
+
+[node name="Yes" type="Button" parent="Окошко ДаНет"]
+margin_left = -60.0
+margin_top = 24.0
+margin_right = -8.0
+margin_bottom = 58.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 10 )
+icon = ExtResource( 5 )
+flat = true
+
+[node name="Текст" type="Label" parent="Окошко ДаНет/Yes"]
+margin_left = 9.0
+margin_top = 5.0
+margin_right = 44.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 11 )
+text = "Да"
+align = 1
+
+[node name="No" type="Button" parent="Окошко ДаНет"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 60.0
+margin_bottom = 58.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 10 )
+icon = ExtResource( 5 )
+flat = true
+
+[node name="Текст" type="Label" parent="Окошко ДаНет/No"]
+margin_left = 9.0
+margin_top = 5.0
+margin_right = 44.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 11 )
+text = "Нет"
+align = 1
+
+[node name="Лор_узел" type="Node2D" parent="."]
+visible = false
+z_index = 1
+
+[node name="Лор_начало" type="Label" parent="Лор_узел"]
+margin_left = 81.0
+margin_top = 70.0
+margin_right = 943.0
+margin_bottom = 566.0
+custom_fonts/font = SubResource( 5 )
+text = "    Начну свой рассказ. Вы родились в многодетной семье обыкновенной единицы-работника Цифрограда.
+По ряду обстоятельств в юношестве Вы вынуждены были покинуть Цифроград. И вот недавно у Вас
+появилась возможность вернуться в родной город.
+    Когда Вы добрались до него, то увидели, что на месте блестящего Цифрограда стоит туманный, заросший
+чем-то фиолетовым город. Вид был жуткий. В попытках найти хоть кого-то живого, Вы наткнулись на
+силуэт, стоящий к Вам спиной. Незнакомец прорычал, обернулся, посмотрел на Вас диким вглядом и
+направился в вашу сторону. Вы встали как вкопанный.
+    Внезапно позади Вас кто-то крикнул: \"Ложись!\". Вы легли и тут же над Вами пролетел мощный пучок
+света, который испепелил незнакомца. Встав и обернувшись, Вы увидели единицу-фермера с ружьём в
+руке. Он предложил Вам перейти в более безопасное место. Это оказалась местная ферма, служившая
+лагерем для выживших. Тут ваш спаситель рассказал об отрицательной порче, погубившей большую
+часть Цифрограда, и о том, что  у всех выживших - иммунитет к ней. Также он сообщил, что надо связаться
+со Святой Десяткой, т.к. боеприпасы подходят к концу. Вы вызвались добровольцем и отправились туда,
+где Святую Десятку видели в последний раз...
+   Вам не повезло: на входе в подземный дворец  сработала ловушка и Вы оказались заперты. Здесь и
+начинается ваше приключение."
+align = 3
+valign = 3
+
+[node name="next_button" type="Button" parent="Лор_узел"]
+margin_left = 425.0
+margin_top = 578.0
+margin_right = 599.0
+margin_bottom = 632.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 6 )
+icon = ExtResource( 7 )
+flat = true
+expand_icon = true
+
+[node name="Текст" type="Label" parent="Лор_узел/next_button"]
+margin_left = 9.0
+margin_top = 10.0
+margin_right = 165.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 7 )
+text = "Далее"
+align = 1
+
+[node name="Стартовое сохранение1" type="RichTextLabel" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+text = "**100**Количество пройденных подземелий, номер подземелья с игроком, количество сохранений, количество сердец, количество смертей, дары,
+x_pred, y_pred, boss_battle, phase_flag, dialog_phase, vub_flag, m, k, z, min_hero_sila, sch_10, monster_HP_visible
+S  0  1  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  0  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  0, 0, 0, 0, 0, 0, 0, 0, 0, 0  0  0 -1 -1 -1  0  0  1  0  1  0  0
+R1  9  9
+  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100
+  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100
+  100  100    0    0    1    0    0    0    0
+  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100
+  100  100  100  100  100  100  100  100  100
+  100  100  100  100  100  100  100  100  100
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+-
+   0 100   0   1
+   0 100   0   1
+   0 100   0   1
+
+
+"
+
+[node name="Стартовое сохранение2" type="RichTextLabel" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+text = "D  3  3  3  9  9
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100  100  100   29  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100    0   -1   -1   -1    0  100  100  100  100    0   -1    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100   -1    0    0    0   -1  100  100  100  100    0    0    0   -1    0  100  100  100  100    0   -1    0   -1   -1  100  100
+  100  100    0    0   -3    0    0  100  100  100  100    0   -1    0   -1    0    0    0    0    0    0   -1   -2    0   -1   29  100
+  100  100   -1    0    0    0   -1  100  100  100  100    0    0   -1   -1    0  100  100  100  100    0   -1    0   -1   -1  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0   -1    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0   -1   -1   -1    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    1    0    0    0    0    0    0    0   -1   -1   -1    0    0    0    0    0    0    0   79    0    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0   -1   -1   -1    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100    0    0    0    0   -1  100  100  100  100    0   -1    0    0    0  100  100  100  100    0   -1    0   -1    0  100  100
+  100  100   -1   -1    0   -1    0  100  100  100  100    0   -1   -1   -1    0  100  100  100  100    0   -1    0   -1    0  100  100
+  100   29   -1    0   -2    0    0    0    0    0    0    0    0   -1    0    0  100  100  100  100    0    0   -3    0    0  100  100
+  100  100   -1   -1    0   -1    0  100  100  100  100    0   -1    0   -1    0  100  100  100  100    0    0   -1    0    0  100  100
+  100  100    0    0    0    0   -1  100  100  100  100    0    0    0    0    0  100  100  100  100   -1   -1   -1   -1   -1  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100   29  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100    0   -2    0    0    0  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0   -3    0    0  100  100  100  100    0    0    0   -1    0  100  100  100  100   -3    0    0    0    0  100  100
+  100  100    0    0    0    0    0    0    0    0    0   -2    0    0   -1    0    0    0    0    0    0    0    0    0    0  100  100
+  100  100    0    0    0    0   -2  100  100  100  100    0   -2    0   -1    0  100  100  100  100    0    0   -1    0    0  100  100
+  100  100   -3    0    0   -2    0  100  100  100  100    0    0   -2    0    0  100  100  100  100   -3    0    0   -2    0  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100   -1    0    0    0   -1  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0   -3  100  100  100  100   -2   -2    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0   -1    0    0    0    0    0    0    0    0   -2    0    0   29  100  100  100    0    0   19    0    0  100  100
+  100  100    0    0    0    0   -3  100  100  100  100    0    0    0   -2   -2  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100    0    0    0   -3    0  100  100  100  100    0    0   -5    0    0  100  100  100  100    0   -3    0    0    0  100  100
+  100  100    0    0   -3    0    0  100  100  100  100    0    0  100    0    0  100  100  100  100    0   -3    0    0    0  100  100
+  100  100    0    0    0    0    0    0    0    0    0    0    0    0   79    0  100  100  100  100    0    0   -3    0    0  100  100
+  100  100   -3    0    0    0    0  100  100  100  100    0    0  100    0    0  100  100  100  100    0    0    0   -3    0  100  100
+  100  100    0    0    0    0   -2  100  100  100  100    0    0   -5    0    0  100  100  100  100    0    0    0   -3    0  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100   29  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100    0    0    0    0    0  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100    0    0  100    0  100    0    0  100  100  100   -5    0   -5    0    0  100  100  100  100    0    0    0   -5   -5  100  100
+  100    0  100  100  -10  100  100    0  100  100  100    0  100    0    0    0  100  100  100  100    0    0  100  100   -5  100  100
+  100    0    0    0  100    0    0    0  100  100  100   -5  100    0    0    0    0    0    0    0    0    0    0  100    0  100  100
+  100    0  100  100    0  100  100    0  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100    0    0    0    0    0    0    0  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100    0    0   -5   -5   -5  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0  100   -5    0  100  100  100  100    0    0  100    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0  100    0    0    0    0    0    0  100    0    0    0  100  100  100  100    0    0    0    0    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0    0    0   -5   -5  100  100  100  100    0  100    0  100    0  100  100
+  100  100    0    0    0    0    0  100  100  100  100    0    0    0   -5   -5  100  100  100  100   -5  100    0  100   -5  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100    0  100  100  100  100
+  100  100    0    0   -5    0    0  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0    0    0   -5  100  100
+  100  100    0    0    0    0   -5  100  100  100  100    0    0    0    0    0  100  100  100  100    0  100    0    0    0  100  100
+  100  100   -5    0    0    0    0    0    0    0    0    0    0    0   19    0    0    0    0    0    0    0    0    0  100  100  100
+  100  100    0    0    0    0   -5  100  100  100  100    0    0    0    0    0  100  100  100  100    0    0  100    0    0  100  100
+  100  100    0    0   -5    0    0  100  100  100  100    0    0    0    0    0  100  100  100  100   -5    0    0    0    0  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100  100
+
+
+"
+
+[node name="Стартовое сохранение3" type="RichTextLabel" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+text = "T 120
+ ch  x  y  m  k  z napr
+  1  3  2  0  0  0  0
+  1  4  2  0  0  0  0
+  1  5  2  0  0  0  0
+  1  3  2  1  0  0  0
+  1  2  3  0  0  0  0
+  1  6  3  0  0  0  0
+  1  5  3  1  0  0  0
+  1  3  3  2  0  0  0
+  1  5  3  2  0  0  0
+  1  6  3  2  0  0  0
+  3  4  4  0  0  0 80
+  1  3  4  1  0  0  0
+  1  5  4  1  0  0  0
+  1  3  4  2  0  0  0
+  2  4  4  2  0  0 86
+  1  6  4  2  0  0  0
+  1  2  5  0  0  0  0
+  1  6  5  0  0  0  0
+  1  4  5  1  0  0  0
+  1  5  5  1  0  0  0
+  1  3  5  2  0  0  0
+  1  5  5  2  0  0  0
+  1  6  5  2  0  0  0
+  1  3  6  1  0  0  0
+  1  3  3  1  1  0  0
+  1  4  3  1  1  0  0
+  1  5  3  1  1  0  0
+  1  3  4  1  1  0  0
+  1  4  4  1  1  0  0
+  1  5  4  1  1  0  0
+  1  3  5  1  1  0  0
+  1  4  5  1  1  0  0
+  1  5  5  1  1  0  0
+  1  6  2  0  2  0  0
+  1  3  2  1  2  0  0
+  1  3  2  2  2  0  0
+  1  5  2  2  2  0  0
+  1  2  3  0  2  0  0
+  1  3  3  0  2  0  0
+  1  5  3  0  2  0  0
+  1  3  3  1  2  0  0
+  1  4  3  1  2  0  0
+  1  5  3  1  2  0  0
+  1  3  3  2  2  0  0
+  1  5  3  2  2  0  0
+  1  2  4  0  2  0  0
+  2  4  4  0  2  0 86
+  1  4  4  1  2  0  0
+  3  4  4  2  2  0 80
+  1  2  5  0  2  0  0
+  1  3  5  0  2  0  0
+  1  5  5  0  2  0  0
+  1  3  5  1  2  0  0
+  1  5  5  1  2  0  0
+  1  4  5  2  2  0  0
+  1  6  6  0  2  0  0
+  1  2  6  2  2  0  0
+  1  3  6  2  2  0  0
+  1  4  6  2  2  0  0
+  1  5  6  2  2  0  0
+  1  6  6  2  2  0  0
+  2  3  2  0  0  1 86
+  3  4  3  0  0  1 80
+  1  5  3  1  0  1  0
+  3  2  3  2  0  1 80
+  2  2  4  1  0  1 86
+  1  5  4  1  0  1  0
+  2  6  5  0  0  1 78
+  2  3  5  1  0  1 78
+  1  5  5  1  0  1  0
+  1  4  5  2  0  1  0
+  3  2  6  0  0  1 80
+  2  5  6  0  0  1 86
+  2  4  6  1  0  1 86
+  3  2  6  2  0  1 80
+  2  5  6  2  0  1 86
+  1  2  2  0  1  1  0
+  1  6  2  0  1  1  0
+  3  6  3  0  1  1 80
+  2  2  3  1  1  1 78
+  2  3  3  1  1  1 78
+  1  4  4  0  1  1  0
+  2  4  4  1  1  1 86
+  3  6  5  0  1  1 80
+  2  5  5  1  1  1 78
+  2  6  5  1  1  1 86
+  3  5  2  0  2  1 80
+  5  4  2  1  2  1  0
+  3  3  2  2  2  1 80
+  3  4  3  0  2  1 76
+  3  3  3  2  2  1 80
+  3  4  4  2  2  1 76
+  3  2  5  0  2  1 80
+  3  5  5  2  2  1 76
+  2  6  6  0  2  1 86
+  5  4  6  1  2  1  0
+  3  5  6  2  2  1 80
+  5  2  2  1  0  2  0
+  5  4  2  1  0  2  0
+  5  5  2  2  0  2  0
+  5  6  2  2  0  2  0
+  5  6  3  2  0  2  0
+  5  2  4  1  0  2  0
+  5  4  2  0  1  2  0
+  5  5  2  0  1  2  0
+  5  6  2  0  1  2  0
+  5  5  3  0  1  2  0
+  5  5  5  1  1  2  0
+  5  6  5  1  1  2  0
+  5  5  6  1  1  2  0
+  5  6  6  1  1  2  0
+  5  2  6  2  1  2  0
+  5  6  6  2  1  2  0
+  5  4  2  0  2  2  0
+  5  6  2  2  2  2  0
+  5  6  3  0  2  2  0
+  5  2  4  0  2  2  0
+  5  6  5  0  2  2  0
+  5  4  6  0  2  2  0
+  5  2  6  2  2  2  0
+K
+  0  0  0
+  0  0  0
+  0  0  0
+
+  0  0  0
+  0  0  0
+  0  0  0
+
+  3  0  0
+  0  0  0
+  0  0  0"
+
+[node name="Название" type="Sprite" parent="."]
+position = Vector2( 512, 180 )
+texture = ExtResource( 1 )
+
+[node name="Button_Play" parent="." instance=ExtResource( 8 )]
+margin_left = 437.0
+margin_top = 253.0
+margin_right = 576.0
+margin_bottom = 321.0
+
+[node name="Button_Options" parent="." instance=ExtResource( 8 )]
+margin_left = 437.0
+margin_top = 328.0
+margin_right = 576.0
+margin_bottom = 396.0
+
+[node name="Button_Help" parent="." instance=ExtResource( 8 )]
+margin_left = 437.0
+margin_top = 403.0
+margin_right = 576.0
+margin_bottom = 471.0
+
+[node name="Button_Quit" parent="." instance=ExtResource( 8 )]
+margin_left = 437.0
+margin_top = 477.0
+margin_right = 576.0
+margin_bottom = 545.0
+
+[node name="Отчёт" type="RichTextLabel" parent="."]
+margin_left = 2.0
+margin_top = 538.0
+margin_right = 264.0
+margin_bottom = 660.0
+custom_fonts/normal_font = SubResource( 12 )
+
+[connection signal="pressed" from="Ячейки сохранений/yach_soxr_1" to="." method="_on_yach_soxr_1_pressed"]
+[connection signal="pressed" from="Ячейки сохранений/yach_soxr_2" to="." method="_on_yach_soxr_2_pressed"]
+[connection signal="pressed" from="Ячейки сохранений/yach_soxr_3" to="." method="_on_yach_soxr_3_pressed"]
+[connection signal="pressed" from="Ячейки сохранений/Button_Quit_Menu" to="." method="_on_Button_Quit_Menu_pressed"]
+[connection signal="pressed" from="Окошко Выбора/var_1" to="." method="_on_var_1_pressed"]
+[connection signal="pressed" from="Окошко Выбора/var_2" to="." method="_on_var_2_pressed"]
+[connection signal="pressed" from="Окошко ДаНет/Yes" to="." method="_on_Yes_pressed"]
+[connection signal="pressed" from="Окошко ДаНет/No" to="." method="_on_No_pressed"]
+[connection signal="pressed" from="Лор_узел/next_button" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="Button_Play" to="." method="_on_Button_Play_pressed"]
+[connection signal="pressed" from="Button_Options" to="." method="_on_Button_Options_pressed"]
+[connection signal="pressed" from="Button_Help" to="." method="_on_Button_Help_pressed"]
+[connection signal="pressed" from="Button_Quit" to="." method="_on_Button_Quit_pressed"]

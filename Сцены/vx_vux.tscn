@@ -1,0 +1,213 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Текстуры/Текстуры неживых объектов/Тьма.png" type="Texture" id=1]
+[ext_resource path="res://Текстуры/Текстуры, формирующие комнату/стена сверху.png" type="Texture" id=2]
+[ext_resource path="res://Текстуры/Текстуры, формирующие комнату/стена слева.png" type="Texture" id=3]
+[ext_resource path="res://Текстуры/Текстуры, формирующие комнату/часть прохода.png" type="Texture" id=6]
+[ext_resource path="res://Текстуры/Текстуры, формирующие комнату/размывка центрапльного поля.png" type="Texture" id=8]
+
+[sub_resource type="NavigationPolygon" id=4]
+vertices = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+outlines = [ PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 ) ]
+
+[sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[sub_resource type="ConvexPolygonShape2D" id=6]
+points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+
+[sub_resource type="NavigationPolygon" id=7]
+vertices = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+outlines = [ PoolVector2Array( 0, 64, 64, 64, 64, 0, 0, 0 ) ]
+
+[sub_resource type="OccluderPolygon2D" id=8]
+polygon = PoolVector2Array( 0, 64, 64, 64, 64, 0, 0, 0 )
+
+[sub_resource type="ConvexPolygonShape2D" id=9]
+points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[sub_resource type="NavigationPolygon" id=24]
+vertices = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+outlines = [ PoolVector2Array( 0, 64, 64, 64, 64, 0, 0, 0 ) ]
+
+[sub_resource type="OccluderPolygon2D" id=25]
+polygon = PoolVector2Array( 0, 64, 64, 64, 64, 0, 0, 0 )
+
+[sub_resource type="ConvexPolygonShape2D" id=26]
+points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[sub_resource type="TileSet" id=16]
+2/name = "стена сверху.png 2"
+2/texture = ExtResource( 2 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 0, 64, 64 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/occluder = SubResource( 5 )
+2/navigation_offset = Vector2( 0, 0 )
+2/navigation = SubResource( 4 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape = SubResource( 6 )
+2/shape_one_way = false
+2/shape_one_way_margin = 1.0
+2/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 6 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+2/z_index = 0
+3/name = "стена слева.png 3"
+3/texture = ExtResource( 3 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 0, 0, 64, 64 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/occluder = SubResource( 8 )
+3/navigation_offset = Vector2( 0, 0 )
+3/navigation = SubResource( 7 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape = SubResource( 9 )
+3/shape_one_way = false
+3/shape_one_way_margin = 1.0
+3/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 9 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+3/z_index = 0
+6/name = "размывка центрапльного поля.png 6"
+6/texture = ExtResource( 8 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 0, 0, 64, 64 )
+6/tile_mode = 0
+6/occluder_offset = Vector2( 0, 0 )
+6/occluder = SubResource( 25 )
+6/navigation_offset = Vector2( 0, 0 )
+6/navigation = SubResource( 24 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape = SubResource( 26 )
+6/shape_one_way = false
+6/shape_one_way_margin = 1.0
+6/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 26 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+6/z_index = 0
+7/name = "Тьма.png 7"
+7/texture = ExtResource( 1 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 0, 0, 64, 64 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape_one_way = false
+7/shape_one_way_margin = 0.0
+7/shapes = [  ]
+7/z_index = 0
+
+[sub_resource type="NavigationPolygon" id=17]
+vertices = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+outlines = [ PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 ) ]
+
+[sub_resource type="OccluderPolygon2D" id=18]
+polygon = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+
+[sub_resource type="ConvexPolygonShape2D" id=19]
+points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+
+[sub_resource type="TileSet" id=23]
+0/name = "часть прохода.png 0"
+0/texture = ExtResource( 6 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/occluder = SubResource( 18 )
+0/navigation_offset = Vector2( 0, 0 )
+0/navigation = SubResource( 17 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 19 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 19 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+
+[node name="vx_vux" type="Node2D"]
+
+[node name="blok_1" type="TileMap" parent="."]
+position = Vector2( -288, -112 )
+tile_set = SubResource( 16 )
+format = 1
+tile_data = PoolIntArray( -131072, 6, 0, -65536, 7, 0, 0, 2, 0 )
+
+[node name="blok_2" type="TileMap" parent="."]
+position = Vector2( -352, -112 )
+tile_set = SubResource( 16 )
+format = 1
+tile_data = PoolIntArray( -1, 1610612739, 0, -65536, 7, 0, -65535, -1610612730, 0, 0, 0, 0 )
+
+[node name="blok_3" type="TileMap" parent="."]
+position = Vector2( -352, -48 )
+tile_set = SubResource( 16 )
+format = 1
+tile_data = PoolIntArray( -2, -1073741818, 0, -1, 7, 0, -65536, 3, 0 )
+
+[node name="blok_4" type="TileMap" parent="."]
+position = Vector2( -480, -112 )
+tile_set = SubResource( 16 )
+format = 1
+tile_data = PoolIntArray( -65536, -1073741821, 0, 0, -1073741817, 0, 65536, 1610612742, 0 )
+
+[node name="vux_vert_1" type="TileMap" parent="."]
+position = Vector2( -352, -240 )
+tile_set = SubResource( 23 )
+format = 1
+tile_data = PoolIntArray( -1, 0, 0, -65535, 1610612736, 0, 65535, 0, 0, 1, 1610612736, 0 )
+
+[node name="vux_gor_1" type="TileMap" parent="."]
+position = Vector2( -544, -176 )
+rotation = 1.5708
+tile_set = SubResource( 23 )
+format = 1
+tile_data = PoolIntArray( -1, 0, 0, -65535, 1610612736, 0, 65535, 0, 0, 1, 1610612736, 0 )
+
+[node name="vux_vert_2" type="TileMap" parent="."]
+position = Vector2( -352, -369 )
+tile_set = SubResource( 23 )
+format = 1
+tile_data = PoolIntArray( -1, 0, 0, -65535, 1610612736, 0, 65535, 0, 0, 1, 1610612736, 0 )
+
+[node name="vux_gor_2" type="TileMap" parent="."]
+position = Vector2( -544, -368 )
+rotation = 1.5708
+tile_set = SubResource( 23 )
+format = 1
+tile_data = PoolIntArray( -1, 0, 0, -65535, 1610612736, 0, 65535, 0, 0, 1, 1610612736, 0 )

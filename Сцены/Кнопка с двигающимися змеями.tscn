@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Текстуры/Текстуры кнопок и окошек/кнопка v2.png" type="Texture" id=1]
+[ext_resource path="res://timesnewromanpsmt.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Сцены/Кнопка с двигающимися змеями.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=12]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "Движение змей"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1.4, 2.1, 2.8, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[sub_resource type="DynamicFont" id=15]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=14]
+size = 24
+font_data = ExtResource( 2 )
+
+[node name="Button_with_snakes" type="Button"]
+margin_left = 3.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 70.0
+rect_pivot_offset = Vector2( -174, -76 )
+mouse_default_cursor_shape = 2
+script = ExtResource( 3 )
+
+[node name="Zmei" type="Sprite" parent="."]
+position = Vector2( 71, 33 )
+texture = ExtResource( 1 )
+hframes = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Zmei"]
+anims/RESET = SubResource( 12 )
+"anims/Движение змей" = SubResource( 13 )
+
+[node name="Текст кнопки32" type="Label" parent="."]
+margin_left = 12.0
+margin_top = 14.0
+margin_right = 130.0
+margin_bottom = 52.0
+custom_fonts/font = SubResource( 15 )
+text = "Текст"
+align = 1
+
+[node name="Текст кнопки24" type="Label" parent="."]
+visible = false
+margin_left = 12.0
+margin_top = 17.0
+margin_right = 130.0
+margin_bottom = 52.0
+custom_fonts/font = SubResource( 14 )
+text = "Текст"
+align = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_Button_with_snakes_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Button_with_snakes_mouse_exited"]
